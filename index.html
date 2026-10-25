@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mandarin Clicker</title>
+  <meta name="description" content="A Material 3 Expressive mandarin clicker with ranks and over 100 mandarin facts.">
+  <meta name="theme-color" content="#fff8f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b110a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top-app-bar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🍊</span>
+      <h1>Mandarin</h1>
+    </div>
+    <div class="actions">
+      <button class="icon-btn toggle" id="vibeBtn" type="button" aria-pressed="true" title="Vibration">
+        <span class="msr" aria-hidden="true">vibration</span>
+        <span class="sr-only">Vibration on click</span>
+      </button>
+      <button class="icon-btn" id="resetBtn" type="button" title="Reset progress">
+        <span class="msr" aria-hidden="true">restart_alt</span>
+        <span class="sr-only">Reset progress</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Clicker">
+      <div class="counter">
+        <output id="count" class="count" aria-live="off">0</output>
+        <span class="count-label" id="countLabel">mandarins</span>
+      </div>
+
+      <div class="rank-chip" id="rankChip">
+        <span class="rank-emoji" id="rankEmoji" aria-hidden="true">🌱</span>
+        <span id="rankName">Seedling</span>
+      </div>
+
+      <div class="clicker-wrap">
+        <button class="clicker" id="clicker" type="button" aria-label="Pick a mandarin">
+          <svg class="clicker-shape" viewBox="-100 -100 200 200" aria-hidden="true">
+            <path id="shapePath" />
+          </svg>
+          <svg class="mandarin" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <radialGradient id="peel" cx="38%" cy="36%" r="70%">
+                <stop offset="0%" stop-color="#ffc27a" />
+                <stop offset="45%" stop-color="#ff9a1f" />
+                <stop offset="85%" stop-color="#f07400" />
+                <stop offset="100%" stop-color="#d95f00" />
+              </radialGradient>
+              <radialGradient id="shine" cx="35%" cy="30%" r="30%">
+                <stop offset="0%" stop-color="#fff" stop-opacity=".75" />
+                <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+              </radialGradient>
+              <pattern id="dimples" width="9" height="9" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r=".9" fill="#c85400" opacity=".28" />
+                <circle cx="6.5" cy="6.5" r=".8" fill="#c85400" opacity=".22" />
+              </pattern>
+            </defs>
+            <ellipse cx="100" cy="112" rx="82" ry="74" fill="url(#peel)" />
+            <ellipse cx="100" cy="112" rx="82" ry="74" fill="url(#dimples)" />
+            <ellipse cx="100" cy="112" rx="82" ry="74" fill="url(#shine)" />
+            <path d="M100 40 q-2 -8 1 -14" stroke="#5b3a12" stroke-width="5" stroke-linecap="round" fill="none" />
+            <path d="M102 32 C118 12 150 12 160 22 C146 40 118 44 102 32 Z" fill="#3f8f3a" />
+            <path d="M104 32 C122 26 140 22 156 22" stroke="#2d6d2a" stroke-width="2" fill="none" stroke-linecap="round" />
+            <ellipse cx="100" cy="42" rx="9" ry="4" fill="#4f8a2a" />
+          </svg>
+        </button>
+        <div class="particles" id="particles" aria-hidden="true"></div>
+      </div>
+      <p class="hint">Tap the mandarin. Space or Enter works too.</p>
+    </section>
+
+    <section class="card rank-card" aria-labelledby="rankTitle">
+      <div class="card-head">
+        <span class="msr filled" aria-hidden="true">military_tech</span>
+        <h2 id="rankTitle">Rank</h2>
+        <span class="rank-index" id="rankIndex">1 / 17</span>
+      </div>
+      <p class="rank-current"><span id="rankEmojiBig" aria-hidden="true">🌱</span> <strong id="rankNameBig">Seedling</strong></p>
+      <div class="progress" role="progressbar" id="progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress to next rank">
+        <div class="progress-active" id="progressActive"></div>
+        <div class="progress-track" id="progressTrack"></div>
+        <span class="progress-stop" aria-hidden="true"></span>
+      </div>
+      <p class="rank-next" id="rankNext">10 more to reach Blossom</p>
+      <details class="rank-list">
+        <summary>
+          <span>All ranks</span>
+          <span class="msr" aria-hidden="true">expand_more</span>
+        </summary>
+        <ol id="rankList"></ol>
+      </details>
+    </section>
+
+    <section class="card fact-card" aria-labelledby="factTitle">
+      <div class="card-head">
+        <span class="msr filled" aria-hidden="true">lightbulb</span>
+        <h2 id="factTitle">Did you know?</h2>
+        <span class="fact-index" id="factIndex">1 / 100</span>
+      </div>
+      <p class="fact-text" id="factText" aria-live="polite"></p>
+      <div class="button-group">
+        <button class="btn tonal" id="prevFact" type="button">
+          <span class="msr" aria-hidden="true">arrow_back</span>Previous
+        </button>
+        <button class="btn tonal square" id="shuffleFact" type="button" aria-label="Random fact" title="Random fact">
+          <span class="msr" aria-hidden="true">shuffle</span>
+        </button>
+        <button class="btn filled" id="nextFact" type="button">
+          Next<span class="msr" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Made with 🍊 · Progress is saved on this device</p>
+  </footer>
+
+  <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+
+  <dialog class="dialog" id="resetDialog">
+    <form method="dialog">
+      <span class="msr dialog-icon" aria-hidden="true">restart_alt</span>
+      <h2>Reset progress?</h2>
+      <p>Your mandarin count and rank will go back to zero. This can't be undone.</p>
+      <div class="dialog-actions">
+        <button class="btn text" value="cancel" type="submit">Cancel</button>
+        <button class="btn text danger" value="confirm" type="submit">Reset</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="facts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "Mandarin Clicker",
+  "short_name": "Mandarin",
+  "description": "A Material 3 Expressive mandarin clicker with ranks and mandarin facts.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8f5",
+  "theme_color": "#ff8c00",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
